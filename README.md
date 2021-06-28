@@ -1,4 +1,4 @@
-# fabrique_poll
+# Fabrique polls application
 test assignment
 
 ## Описание
