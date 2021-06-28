@@ -25,7 +25,7 @@ class UserAnswerSerializer(serializers.ModelSerializer):
 
 class UserAnswerDetailedSerializer(serializers.ModelSerializer):
     question = QuestionSerializer()
-    answer = AnswerSerializer(many=True)
+    answers = AnswerSerializer(many=True)
 
     class Meta:
         model = UserAnswer
