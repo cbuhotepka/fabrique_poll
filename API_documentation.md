@@ -8,7 +8,7 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 Detailed question API contains all the possible answer_IDs and their text-interpretations
 
-+ Response 200 (application/json)
++ Response (application/json)
 
         [
             {
@@ -41,7 +41,7 @@ Detailed question API contains all the possible answer_IDs and their text-interp
 
 Show a list of all the questions user answered with their answers
 
-+ Response 200 (application/json)
++ Response (application/json)
 
         [
             {
@@ -60,7 +60,7 @@ Show a list of all the questions user answered with their answers
 
 Show list of the questions available for the current user 
 
-+ Response 200 (application/json)
++ Response (application/json)
 
         [
             {
@@ -138,7 +138,7 @@ or
             "text_answer": "I'm fine"
         }
 
-+ Response 200 (application/json)
++ Response (application/json)
 
         {"result": "ok"}
 or
