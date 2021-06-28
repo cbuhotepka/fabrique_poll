@@ -1,0 +1,21 @@
+{% extends 'base_menu.html' %}
+
+{% block title %}
+    Available polls
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>The list of all posts</h1>
+
+    <ul>
+        {% for question in available_polls %}
+        <li>
+            <a href="#">{{ question }}</a>
+        </li>
+        {% empty %}
+        <li>There is no available polls</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
