@@ -191,35 +191,6 @@ Create new Poll
             ]
         }
         
-## Answer 
-        
-### Answer the question [api/answer] [POST]
-
-Create the answer {answers/text_answer} on the question {question_id} from user {user_id}
-If user_id is not provided, create the answer of the current user by their session_key.
-Raises an error if provided with the answer type unconsistent with the question type; if provided with both "answers" and "text_answer"; or if the answer already exists.
-
-+ Request (application/json)
-
-        {
-            "user_id": 1,
-            "question_id": 1,
-            "answers": [3]
-        }
-or
-        {
-            "question_id": 1,
-            "text_answer": "I'm fine"
-        }
-
-+ Response (application/json)
-
-        {"result": "ok"}
-or
-        ["Answer already exists"]
-or
-        ["There shouldn't be text answer in a single-answer question"]
-        
 ### All the current user's previous answers [/api/my_answers] [GET]
 
 Show a list of all Polls with current user's answered questions
@@ -298,3 +269,33 @@ Show a list of all the Polls available for the current User
                 ]
             }
         ]
+
+## Answer 
+        
+### Answer the question [api/answer] [POST]
+
+Create the answer {answers/text_answer} on the question {question_id} from user {user_id}
+If user_id is not provided, create the answer of the current user by their session_key.
+Raises an error if provided with the answer type unconsistent with the question type; if provided with both "answers" and "text_answer"; or if the answer already exists.
+
++ Request (application/json)
+
+        {
+            "user_id": 1,
+            "question_id": 1,
+            "answers": [3]
+        }
+or
+        {
+            "question_id": 1,
+            "text_answer": "I'm fine"
+        }
+
++ Response (application/json)
+
+        {"result": "ok"}
+or
+        ["Answer already exists"]
+or
+        ["There shouldn't be text answer in a single-answer question"]
+     
