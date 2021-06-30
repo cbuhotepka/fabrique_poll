@@ -285,7 +285,7 @@ Raises an error if provided with the answer type unconsistent with the question 
             "question_id": 1,
             "answers": [3]
         }
-or
+        or
         {
             "question_id": 1,
             "text_answer": "I'm fine"
@@ -294,8 +294,8 @@ or
 + Response (application/json)
 
         {"result": "ok"}
-or
+        or
         ["Answer already exists"]
-or
+        or
         ["There shouldn't be text answer in a single-answer question"]
      
