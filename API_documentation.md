@@ -6,35 +6,204 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 ### List All Questions [GET]
 
-Detailed question API contains all the possible answer_IDs and their text-interpretations
+Detailed questions API contains all the possible answer_IDs and their text-interpretations
 
 + Response (application/json)
 
         [
             {
                 "id": 1,
-                "name": "What is the answer to the Ultimate Question of Life, the Universe, and Everything",
-                "description": "Try 42",
+                "question": "What is the answer to the Universe?",
                 "type": "single",
-                "start_date": "2021-06-28",
-                "end_date": "2021-07-30",
                 "answers": [
                     {
-                        "id": 1,
-                        "answer": "Nothing"
+                        "id": 7,
+                        "answer": "Nothing else"
                     },
                     {
-                        "id": 2,
-                        "answer": "Everything"
+                        "id": 8,
+                        "answer": "Everything else"
                     },
                     {
-                        "id": 3,
+                        "id": 9,
                         "answer": "42"
                     }
-                ]
+                ],
+                "poll": 1
             }
         ]
+
+## Detailed question [/api/question_detail/{id}]
+
+### Details of one question [GET]
+
+Detailed question API by {id} contains all the possible answer_IDs and their text-interpretations
+
++ Response (application/json)
+
+        {
+            "id": 1,
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7,
+                    "answer": "Nothing else"
+                },
+                {
+                    "id": 8,
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
         
+## Question Update/Delete [/api/question_detail/{id}]
+
+### Details of one question [PUT/DELETE]
+
+Update or Delete question API by {id}
+Each answer requires either:
+- "id" - Add existing answer to this question
+- "answer" - Create new answer with the text given
+- both - Alter the existing answer
+
++ Response (application/json)
+
+        {
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7
+                },
+                {
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
+        
+## Question Create [/api/question_create]
+
+### Details of one question [POST]
+
+Create new Question
+
++ Response (application/json)
+
+        {
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7
+                },
+                {
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
+        
+
+## Detailed poll [/api/poll_detail/{id}]
+
+### Details of one question [GET]
+
+Detailed question API by {id} contains all the possible answer_IDs and their text-interpretations
+
++ Response (application/json)
+
+        {
+            "id": 1,
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7,
+                    "answer": "Nothing else"
+                },
+                {
+                    "id": 8,
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
+        
+## Question Update/Delete [/api/question_detail/{id}]
+
+### Details of one question [PUT/DELETE]
+
+Update or Delete question API by {id}
+Each answer requires either:
+- "id" - Add existing answer to this question
+- "answer" - Create new answer with the text given
+- both - Alter the existing answer
+
++ Response (application/json)
+
+        {
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7
+                },
+                {
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
+        
+## Question Create [/api/question_create]
+
+### Details of one question [POST]
+
+Create new Question
+
++ Response (application/json)
+
+        {
+            "question": "What is the answer to the Universe?",
+            "type": "single",
+            "answers": [
+                {
+                    "id": 7
+                },
+                {
+                    "answer": "Everything else"
+                },
+                {
+                    "id": 9,
+                    "answer": "42"
+                }
+            ],
+            "poll": 1
+        }
+
 ## All the user's answers [/api/answers_of_user/{id}]
         
 ### List All Questions [GET]
