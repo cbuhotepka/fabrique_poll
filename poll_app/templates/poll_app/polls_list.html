@@ -9,9 +9,9 @@
     <h1>The list of all posts</h1>
 
     <ul>
-        {% for question in available_polls %}
+        {% for poll in available_polls %}
         <li>
-            <a href="#">{{ question }}</a>
+            <a href="#">{{ poll }}</a>
         </li>
         {% empty %}
         <li>There is no available polls</li>

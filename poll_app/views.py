@@ -1,17 +1,21 @@
 from django.shortcuts import render
 from django.views.generic import View
-from .models import Question, User
+from .models import Question, User, Poll, UserAnswer
 import datetime
 from rest_framework import serializers, status
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import QuestionSerializer, UserAnswerSerializer, UserAnswerDetailedSerializer, AnswerSerializer
+from .serializers import PollUpdateSerializer, PollDetailedSerializer, AnsweredPollSerializer
+from django.db.models import Q
+from django.db.models import Prefetch
 
 def get_or_create_user(request):
     if not request.session.session_key:
         request.session.create()
+        request.session.save()
     session_key = request.session.session_key
     user = User.objects.filter(session_key=session_key).first()
     if not user:
@@ -26,7 +30,7 @@ class AllPollsView(View):
     def get(self, request):
         user = get_or_create_user(request)
         today = datetime.date.today()
-        available_polls = Question.objects.filter(start_date__lte=today).filter(end_date__gte=today)
+        available_polls = Poll.objects.filter(start_date__lte=today).filter(end_date__gte=today)
                 
         context = {
             'user': user,
@@ -36,6 +40,39 @@ class AllPollsView(View):
 
 
 # API Views
+class PollDetailAPIView(APIView):
+    serializer_class = PollDetailedSerializer
+
+    def get(self, request, pk):
+        poll = Poll.objects.get(pk=pk)
+        serializer = PollDetailedSerializer(poll)
+        return Response(serializer.data)
+        
+
+class PollUpdateAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = PollUpdateSerializer
+    permission_classes = (IsAdminUser, )
+    queryset = Poll.objects.all()    
+
+
+class PollCreateAPIView(CreateAPIView):
+    serializer_class = PollUpdateSerializer
+    permission_classes = (IsAdminUser, )
+    queryset = Poll.objects.all()
+
+
+class AvailablePollsListAPIView(APIView):
+    serializer_class = AnsweredPollSerializer
+
+    def get(self, request):
+        user = get_or_create_user(request)
+        today = datetime.date.today()
+        polls = Poll.objects.filter(start_date__lte=today).filter(end_date__gte=today).prefetch_related('questions__answers_of_users')
+        polls = polls.exclude(questions__answers_of_users__user=user)
+        serializer = AnsweredPollSerializer(polls, many=True)
+        return Response(serializer.data)
+
+
 class QuestionDetailAPIView(APIView):
     serializer_class = QuestionSerializer
 
@@ -44,7 +81,19 @@ class QuestionDetailAPIView(APIView):
         serializer = QuestionSerializer(question)
         return Response(serializer.data)
 
-        
+
+class QuestionUpdateAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = QuestionSerializer
+    permission_classes = (IsAdminUser, )
+    queryset = Question.objects.all()
+
+
+class QuestionCreateAPIView(CreateAPIView):
+    serializer_class = QuestionSerializer
+    permission_classes = (IsAdminUser, )
+    queryset = Question.objects.all()
+
+
 class AllQuestionListAPIView(APIView):
     serializer_class = QuestionSerializer
 
@@ -54,25 +103,31 @@ class AllQuestionListAPIView(APIView):
         return Response(serializer.data)
 
 
-class AvailableQuestionListAPIView(APIView):
-    serializer_class = QuestionSerializer
+class AnsweredPollsListAPIView(APIView):
+    serializer_class = AnsweredPollSerializer
 
     def get(self, request):
         user = get_or_create_user(request)
-        today = datetime.date.today()
-        questions = Question.objects.filter(start_date__lte=today).filter(end_date__gte=today).prefetch_related('answers_of_users')
-        questions = questions.exclude(answers_of_users__user=user)
-        serializer = QuestionSerializer(questions, many=True)
+        user_answers = user.answers_of_user.all()
+        for user_answer in user_answers:
+            print(user_answer)
+        prefetch = Prefetch('questions__answers_of_users', queryset=UserAnswer.objects.filter(user=user), to_attr='answered_questions')
+        polls = Poll.objects.filter(questions__answers_of_users__in=user_answers).distinct().prefetch_related(prefetch)
+        serializer = AnsweredPollSerializer(polls, many=True)
         return Response(serializer.data)
 
 
-class AnsweredQuestionDetailedListAPIView(APIView):
-    serializer_class = UserAnswerDetailedSerializer
+class UserAnsweredPollsListAPIView(APIView):
+    serializer_class = AnsweredPollSerializer
 
-    def get(self, request):
-        user = get_or_create_user(request)
-        user_answers = user.answers_of_user
-        serializer = UserAnswerDetailedSerializer(user_answers, many=True)
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+        user_answers = user.answers_of_user.all()
+        for user_answer in user_answers:
+            print(user_answer)
+        prefetch = Prefetch('questions__answers_of_users', queryset=UserAnswer.objects.filter(user=user), to_attr='answered_questions')
+        polls = Poll.objects.filter(questions__answers_of_users__in=user_answers).distinct().prefetch_related(prefetch)
+        serializer = AnsweredPollSerializer(polls, many=True)
         return Response(serializer.data)
 
 

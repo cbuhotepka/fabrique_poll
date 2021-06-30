@@ -4,32 +4,41 @@ from django.core.exceptions import ValidationError
 import datetime
 
 # Create your models here.
-class Question(models.Model):
+class Poll(models.Model):
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField()
+    
+    def __str__(self):
+        return self.name
+
+    def clean(self):
+        if self.end_date < datetime.date.today():
+            raise ValidationError("End date cannot be less than start date")
+
+
+class Question(models.Model):
+    question = models.CharField(max_length=1024)
     QUESTION_TYPES = [
         ('single', 'Single choice'),
         ('multiple', 'Multiple choice'),
         ('text', 'Text answer'),
     ]
     type = models.CharField(max_length=32, choices=QUESTION_TYPES)
-    start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField()
-
+    poll = models.ForeignKey(Poll, related_name='questions', on_delete=models.SET_NULL, null=True)
+    
     def __str__(self):
-        return self.name
+        return self.question
 
     def clean(self):
-        if self.type == 'text' and self.answer_set.all() :
+        if self.type == 'text' and self.answers.all() :
             raise ValidationError("There cannot be choices in the text-answer type of the question")
-        if self.end_date < datetime.date.today():
-            raise ValidationError("End date cannot be less than start date")
-
 
 
 class Answer(models.Model):
     answer = models.CharField(max_length=1024)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', null=True)
 
     def __str__(self):
         return self.answer
@@ -47,4 +56,7 @@ class UserAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers_of_users')
     answers = models.ManyToManyField(Answer, blank=True)
     text_answer = models.CharField(max_length=1024, blank=True)
+
+    def __str__(self):
+        return self.question.question + ' - ' + str(self.answers.all()) + ' - ' + self.text_answer
 
