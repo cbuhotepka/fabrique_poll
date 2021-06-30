@@ -285,7 +285,9 @@ Raises an error if provided with the answer type unconsistent with the question 
             "question_id": 1,
             "answers": [3]
         }
+        
         or
+        
         {
             "question_id": 1,
             "text_answer": "I'm fine"
@@ -294,8 +296,12 @@ Raises an error if provided with the answer type unconsistent with the question 
 + Response (application/json)
 
         {"result": "ok"}
+        
         or
+        
         ["Answer already exists"]
+        
         or
+        
         ["There shouldn't be text answer in a single-answer question"]
      
