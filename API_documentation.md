@@ -2,9 +2,9 @@
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## All Questions Collection [/api/all_questions]
+## Questions API
 
-### List All Questions [GET]
+### List All Questions [/api/all_questions] [GET]
 
 Detailed questions API contains all the possible answer_IDs and their text-interpretations
 
@@ -33,9 +33,7 @@ Detailed questions API contains all the possible answer_IDs and their text-inter
             }
         ]
 
-## Detailed question [/api/question_detail/{id}]
-
-### Details of one question [GET]
+### Detailed question [/api/question_detail/{id}] [GET]
 
 Detailed question API by {id} contains all the possible answer_IDs and their text-interpretations
 
@@ -61,10 +59,8 @@ Detailed question API by {id} contains all the possible answer_IDs and their tex
             ],
             "poll": 1
         }
-        
-## Question Update/Delete [/api/question_detail/{id}]
 
-### Details of one question [PUT/DELETE]
+### Question Update/Delete [/api/question_detail/{id}] [PUT/DELETE]
 
 Update or Delete question API by {id}
 Each answer requires either:
@@ -72,7 +68,7 @@ Each answer requires either:
 - "answer" - Create new answer with the text given
 - both - Alter the existing answer
 
-+ Response (application/json)
++ Request (application/json)
 
         {
             "question": "What is the answer to the Universe?",
@@ -91,14 +87,12 @@ Each answer requires either:
             ],
             "poll": 1
         }
-        
-## Question Create [/api/question_create]
 
-### Details of one question [POST]
+### Question Create [/api/question_create] [POST]
 
 Create new Question
 
-+ Response (application/json)
++ Request (application/json)
 
         {
             "question": "What is the answer to the Universe?",
@@ -118,177 +112,88 @@ Create new Question
             "poll": 1
         }
         
+## Polls API
 
-## Detailed poll [/api/poll_detail/{id}]
+### Detailed poll [/api/poll_detail/{id}] [GET]
 
-### Details of one question [GET]
-
-Detailed question API by {id} contains all the possible answer_IDs and their text-interpretations
+Detailed poll API by {id} with all of the questions
 
 + Response (application/json)
 
         {
             "id": 1,
-            "question": "What is the answer to the Universe?",
-            "type": "single",
-            "answers": [
+            "name": "New Poll",
+            "description": "Description",
+            "start_date": "2021-06-29",
+            "end_date": "2021-08-13",
+            "questions": [
                 {
-                    "id": 7,
-                    "answer": "Nothing else"
-                },
-                {
-                    "id": 8,
-                    "answer": "Everything else"
-                },
-                {
-                    "id": 9,
-                    "answer": "42"
-                }
-            ],
-            "poll": 1
-        }
-        
-## Question Update/Delete [/api/question_detail/{id}]
-
-### Details of one question [PUT/DELETE]
-
-Update or Delete question API by {id}
-Each answer requires either:
-- "id" - Add existing answer to this question
-- "answer" - Create new answer with the text given
-- both - Alter the existing answer
-
-+ Response (application/json)
-
-        {
-            "question": "What is the answer to the Universe?",
-            "type": "single",
-            "answers": [
-                {
-                    "id": 7
-                },
-                {
-                    "answer": "Everything else"
-                },
-                {
-                    "id": 9,
-                    "answer": "42"
-                }
-            ],
-            "poll": 1
-        }
-        
-## Question Create [/api/question_create]
-
-### Details of one question [POST]
-
-Create new Question
-
-+ Response (application/json)
-
-        {
-            "question": "What is the answer to the Universe?",
-            "type": "single",
-            "answers": [
-                {
-                    "id": 7
-                },
-                {
-                    "answer": "Everything else"
-                },
-                {
-                    "id": 9,
-                    "answer": "42"
-                }
-            ],
-            "poll": 1
-        }
-
-## All the user's answers [/api/answers_of_user/{id}]
-        
-### List All Questions [GET]
-
-Show a list of all the questions user answered with their answers
-
-+ Response (application/json)
-
-        [
-            {
-                "user_id": 1,
-                "question_id": 1,
-                "answers": [
-                    3
-                ],
-                "text_answer": ""
-            }
-        ]
-        
-## All the user's answers [/api/available_questions]
-        
-### Available questions [GET]
-
-Show list of the questions available for the current user 
-
-+ Response (application/json)
-
-        [
-            {
-                "id": 2,
-                "name": "What was the question?",
-                "description": "",
-                "type": "text",
-                "start_date": "2021-06-28",
-                "end_date": "2021-08-26",
-                "answers": []
-            }
-        ]
-        
-## All the user's previous answers [/api/my_answers]
-        
-### Available questions [GET]
-
-Show detailed list of current user's answered questions
-
-+ Response 200 (application/json)
-
-        [
-            {
-                "user_id": 1,
-                "question": {
                     "id": 1,
-                    "name": "What is the answer to the Ultimate Question of Life, the Universe, and Everything",
-                    "description": "",
+                    "question": "What is the answer to the Universe?",
                     "type": "single",
-                    "start_date": "2021-06-28",
-                    "end_date": "2021-07-30",
                     "answers": [
                         {
-                            "id": 1,
-                            "answer": "Nothing"
+                            "id": 7,
+                            "answer": "Nothing else"
                         },
                         {
-                            "id": 2,
-                            "answer": "Everything"
+                            "id": 8,
+                            "answer": "Everything else"
                         },
                         {
-                            "id": 3,
+                            "id": 9,
                             "answer": "42"
                         }
-                    ]
+                    ],
+                    "poll": 1
                 },
-                "answers": [
-                    {
-                        "id": 3,
-                        "answer": "42"
-                    }
-                ],
-                "text_answer": ""
-            }
-        ]
+                {
+                    "id": 2,
+                    "question": "What was the question?",
+                    "type": "text",
+                    "answers": [],
+                    "poll": 1
+                }
+            ]
+        }
 
-## Answer the question [/api/answer]
+### Poll Update/Delete [/api/question_detail/{id}] [PUT/DELETE]
 
-### Answer the question [POST]
+Update or Delete Poll API by {id}
+Contains IDs of its questions
+
++ Request (application/json)
+
+        {
+            "name": "New Poll",
+            "description": "Description",
+            "end_date": "2021-08-13",
+            "questions": [
+                1,
+                2
+            ]
+        }
+
+### Poll Create [/api/poll_create] [POST]
+
+Create new Poll
+"start_date" created automatically
+
++ Response (application/json)
+
+        {
+            "name": "New Poll",
+            "description": "Description",
+            "end_date": "2021-08-13",
+            "questions": [
+                1,
+                2
+            ]
+        }
+        
+## Answer 
+        
+### Answer the question [api/answer] [POST]
 
 Create the answer {answers/text_answer} on the question {question_id} from user {user_id}
 If user_id is not provided, create the answer of the current user by their session_key.
@@ -314,3 +219,82 @@ or
         ["Answer already exists"]
 or
         ["There shouldn't be text answer in a single-answer question"]
+        
+### All the current user's previous answers [/api/my_answers] [GET]
+
+Show a list of all Polls with current user's answered questions
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 3,
+                "name": "Third try Poll",
+                "description": "Description",
+                "questions": [
+                    {
+                        "question": "Yet another question",
+                        "answer": [
+                            {
+                                "choice_answers": [
+                                    "Nothing else",
+                                    "42"
+                                ],
+                                "text_answer": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+        
+### All the user's answers [/api/answers_of_user/{id}] [GET]
+
+Show a list of all Polls with user's {id} answered questions
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "New Poll",
+                "description": "Description",
+                "questions": [
+                    {
+                        "question": "What is the answer to the Universe?",
+                        "answer": []
+                    },
+                    {
+                        "question": "What was the question?",
+                        "answer": [
+                            {
+                                "choice_answers": [],
+                                "text_answer": "Dont know"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+        
+### Available questions [/api/available_polls] [GET]
+
+Show a list of all the Polls available for the current User
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "New Poll",
+                "description": "Description",
+                "questions": [
+                    {
+                        "question": "What is the answer to the Universe?"
+                    },
+                    {
+                        "question": "What was the question?"
+                    }
+                ]
+            }
+        ]
