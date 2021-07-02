@@ -22,7 +22,7 @@ test assignment
     
     .\venv\Scripts\activate.ps1
     
-    cd .\idaproject_assignment
+    cd .\fabrique_poll
     
     pip install -r requirements.txt
     
